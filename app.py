@@ -10,6 +10,8 @@ from src.router import Bot
 from src.search import RecipeIndex
 
 st.set_page_config(page_title="Recipe chatbot", page_icon=":material/restaurant:", layout="centered")
+# No native option hides the connection-state chip; the in-chat status covers progress feedback.
+st.html("<style>[data-testid='stStatusWidget'] { display: none; }</style>")
 
 
 @st.cache_resource(show_spinner="Loading recipe index (first run builds the TF-IDF cache)...")
