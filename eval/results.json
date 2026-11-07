@@ -1,0 +1,348 @@
+{
+  "pass": 57,
+  "fail": 0,
+  "checks": [
+    {
+      "conv": "C1",
+      "turn": "Find a penne pasta recipe",
+      "ok": true,
+      "detail": "5 result ID(s), all exist in dataset"
+    },
+    {
+      "conv": "C1",
+      "turn": "I cannot have dairy",
+      "ok": true,
+      "detail": "reply contains 'Refined the active search'"
+    },
+    {
+      "conv": "C1",
+      "turn": "I cannot have dairy",
+      "ok": true,
+      "detail": "reply contains 'restrictions: dairy'"
+    },
+    {
+      "conv": "C1",
+      "turn": "I cannot have dairy",
+      "ok": true,
+      "detail": "5 result ID(s), all exist in dataset"
+    },
+    {
+      "conv": "C1",
+      "turn": "I cannot have dairy",
+      "ok": true,
+      "detail": "restriction 'dairy' re-checked on every result: OK"
+    },
+    {
+      "conv": "C1",
+      "turn": "I cannot have dairy",
+      "ok": true,
+      "detail": "reply contains 'evidence:'"
+    },
+    {
+      "conv": "C1",
+      "turn": "show 1",
+      "ok": true,
+      "detail": "reply contains 'Ingredients'"
+    },
+    {
+      "conv": "C1",
+      "turn": "show 1",
+      "ok": true,
+      "detail": "reply contains 'Instructions'"
+    },
+    {
+      "conv": "C2",
+      "turn": "How many recipes contain both garlic and onion? What percentage of the dataset is that?",
+      "ok": true,
+      "detail": "independent Python loop: n=9,890, denominator=122,938, pct=8.04%"
+    },
+    {
+      "conv": "C2",
+      "turn": "How many recipes contain both garlic and onion? What percentage of the dataset is that?",
+      "ok": true,
+      "detail": "reply contains 'Denominator'"
+    },
+    {
+      "conv": "C2",
+      "turn": "How many recipes contain both garlic and onion? What percentage of the dataset is that?",
+      "ok": true,
+      "detail": "reply contains 'Calculation'"
+    },
+    {
+      "conv": "C3",
+      "turn": "Among recipes containing tomato, which five have the fewest instruction steps?",
+      "ok": true,
+      "detail": "independent pandas re-rank: expected ['ar:/0wx00RefE0VHzlff/GBszObKmj63Pi', 'ar:5s.4S6mTsQWRNXHDFGWe6ea03Oac48C', 'ar:9T2HkniyS.3VZB9NmFvzrfA39fMSt..', 'ar:BqfGsVgk7WHPebuzDH3IIRDAo0Vy8Hy', 'ar:JbfChmEYkdCkIrzqZph1dWJgf/CimkW'], got ['ar:/0wx00RefE0VHzlff/GBszObKmj63Pi', 'ar:5s.4S6mTsQWRNXHDFGWe6ea03Oac48C', 'ar:9T2HkniyS.3VZB9NmFvzrfA39fMSt..', 'ar:BqfGsVgk7WHPebuzDH3IIRDAo0Vy8Hy', 'ar:JbfChmEYkdCkIrzqZph1dWJgf/CimkW']"
+    },
+    {
+      "conv": "C3",
+      "turn": "Among recipes containing tomato, which five have the fewest instruction steps?",
+      "ok": true,
+      "detail": "reply contains 'step = non-empty instruction line'"
+    },
+    {
+      "conv": "C4",
+      "turn": "What's the average and median ingredient count?",
+      "ok": true,
+      "detail": "independent pandas: mean 10.39, median 9.0"
+    },
+    {
+      "conv": "C4",
+      "turn": "What's the average and median ingredient count?",
+      "ok": true,
+      "detail": "reply contains 'Recipes analyzed'"
+    },
+    {
+      "conv": "C5",
+      "turn": "Find a penne pasta recipe",
+      "ok": true,
+      "detail": "5 result ID(s), all exist in dataset"
+    },
+    {
+      "conv": "C5",
+      "turn": "How many calories are in result 1?",
+      "ok": true,
+      "detail": "reply contains 'Not available in this dataset'"
+    },
+    {
+      "conv": "C5",
+      "turn": "How many calories are in result 1?",
+      "ok": true,
+      "detail": "reply contains 'won't estimate'"
+    },
+    {
+      "conv": "C6",
+      "turn": "Show me gluten-free pasta",
+      "ok": true,
+      "detail": "reply contains 'was NOT applied'"
+    },
+    {
+      "conv": "C6",
+      "turn": "Find unicorn dust cake",
+      "ok": true,
+      "detail": "reply contains 'No matching recipe found'"
+    },
+    {
+      "conv": "C7",
+      "turn": "I have eggs, onions, tomatoes, and rice. Suggest five recipes using as many of these as possible, with no peanuts and at most six instruction steps. Prefer recipes that need the fewest additional ingredients.",
+      "ok": true,
+      "detail": "5 result ID(s), all exist in dataset"
+    },
+    {
+      "conv": "C7",
+      "turn": "I have eggs, onions, tomatoes, and rice. Suggest five recipes using as many of these as possible, with no peanuts and at most six instruction steps. Prefer recipes that need the fewest additional ingredients.",
+      "ok": true,
+      "detail": "restriction 'peanut' re-checked on every result: OK"
+    },
+    {
+      "conv": "C7",
+      "turn": "I have eggs, onions, tomatoes, and rice. Suggest five recipes using as many of these as possible, with no peanuts and at most six instruction steps. Prefer recipes that need the fewest additional ingredients.",
+      "ok": true,
+      "detail": "step limit 6 (reliable counts) re-checked on every result: OK"
+    },
+    {
+      "conv": "C7",
+      "turn": "I have eggs, onions, tomatoes, and rice. Suggest five recipes using as many of these as possible, with no peanuts and at most six instruction steps. Prefer recipes that need the fewest additional ingredients.",
+      "ok": true,
+      "detail": "reply contains 'why this rank'"
+    },
+    {
+      "conv": "C7",
+      "turn": "I have eggs, onions, tomatoes, and rice. Suggest five recipes using as many of these as possible, with no peanuts and at most six instruction steps. Prefer recipes that need the fewest additional ingredients.",
+      "ok": true,
+      "detail": "reply contains 'missing / extra'"
+    },
+    {
+      "conv": "C7",
+      "turn": "Exclude eggs too",
+      "ok": true,
+      "detail": "reply contains 'Updated'"
+    },
+    {
+      "conv": "C7",
+      "turn": "Exclude eggs too",
+      "ok": true,
+      "detail": "5 result ID(s), all exist in dataset"
+    },
+    {
+      "conv": "C7",
+      "turn": "Exclude eggs too",
+      "ok": true,
+      "detail": "restriction 'egg' re-checked on every result: OK"
+    },
+    {
+      "conv": "C7",
+      "turn": "Exclude eggs too",
+      "ok": true,
+      "detail": "restriction 'peanut' re-checked on every result: OK"
+    },
+    {
+      "conv": "C7",
+      "turn": "Exclude eggs too",
+      "ok": true,
+      "detail": "step limit 6 (reliable counts) re-checked on every result: OK"
+    },
+    {
+      "conv": "C7",
+      "turn": "show 1",
+      "ok": true,
+      "detail": "reply contains 'Ingredients'"
+    },
+    {
+      "conv": "C7",
+      "turn": "show 1",
+      "ok": true,
+      "detail": "reply contains 'Instructions'"
+    },
+    {
+      "conv": "C8",
+      "turn": "I have unicorn horn and moondust",
+      "ok": true,
+      "detail": "reply contains 'not an ingredient name in the dataset'"
+    },
+    {
+      "conv": "C8",
+      "turn": "I have unicorn horn and moondust",
+      "ok": true,
+      "detail": "reply contains 'nothing was matched'"
+    },
+    {
+      "conv": "C8",
+      "turn": "I have rice and tomatoes, at most 0 steps",
+      "ok": true,
+      "detail": "reply contains 'No match found'"
+    },
+    {
+      "conv": "C8",
+      "turn": "I have rice and tomatoes, at most 0 steps",
+      "ok": true,
+      "detail": "reply contains 'VIOLATES'"
+    },
+    {
+      "conv": "C8",
+      "turn": "I have rice and tomatoes, at most 0 steps",
+      "ok": true,
+      "detail": "reply contains 'NOT eligible'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Take this banana bread recipe and remove eggs. Use only ingredients that appear in the dataset. What replacements have evidence from related baked recipes, and how might the texture change?",
+      "ok": true,
+      "detail": "16 cited recipe ID(s), unknown: none"
+    },
+    {
+      "conv": "C9",
+      "turn": "Take this banana bread recipe and remove eggs. Use only ingredients that appear in the dataset. What replacements have evidence from related baked recipes, and how might the texture change?",
+      "ok": true,
+      "detail": "reply contains 'Updated ingredient list'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Take this banana bread recipe and remove eggs. Use only ingredients that appear in the dataset. What replacements have evidence from related baked recipes, and how might the texture change?",
+      "ok": true,
+      "detail": "reply contains 'Revised instructions'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Take this banana bread recipe and remove eggs. Use only ingredients that appear in the dataset. What replacements have evidence from related baked recipes, and how might the texture change?",
+      "ok": true,
+      "detail": "reply contains 'Expected effects'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Take this banana bread recipe and remove eggs. Use only ingredients that appear in the dataset. What replacements have evidence from related baked recipes, and how might the texture change?",
+      "ok": true,
+      "detail": "reply contains 'PREDICTIONS'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Take this banana bread recipe and remove eggs. Use only ingredients that appear in the dataset. What replacements have evidence from related baked recipes, and how might the texture change?",
+      "ok": true,
+      "detail": "reply contains 'confidence'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Use applesauce instead",
+      "ok": true,
+      "detail": "reply contains 'applesauce'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Use applesauce instead",
+      "ok": true,
+      "detail": "16 cited recipe ID(s), unknown: none"
+    },
+    {
+      "conv": "C9",
+      "turn": "Also no dairy",
+      "ok": true,
+      "detail": "reply contains 'dairy'"
+    },
+    {
+      "conv": "C9",
+      "turn": "Also no dairy",
+      "ok": true,
+      "detail": "reply contains 'Verification'"
+    },
+    {
+      "conv": "C10",
+      "turn": "Take this quiche recipe and remove eggs",
+      "ok": true,
+      "detail": "reply contains 'Not adapted'"
+    },
+    {
+      "conv": "C10",
+      "turn": "start over",
+      "ok": true,
+      "detail": "reply contains 'reset'"
+    },
+    {
+      "conv": "C10",
+      "turn": "Find banana bread",
+      "ok": true,
+      "detail": "5 result ID(s), all exist in dataset"
+    },
+    {
+      "conv": "C10",
+      "turn": "show 1",
+      "ok": true,
+      "detail": "reply contains 'Ingredients'"
+    },
+    {
+      "conv": "C10",
+      "turn": "Replace the flour in this recipe",
+      "ok": true,
+      "detail": "reply contains 'No reliable adaptation supported'"
+    },
+    {
+      "conv": "C10",
+      "turn": "Replace the flour in this recipe",
+      "ok": true,
+      "detail": "reply contains 'no substitution rules'"
+    },
+    {
+      "conv": "C11",
+      "turn": "Take this banana bread recipe and remove eggs using yogurt, without dairy",
+      "ok": true,
+      "detail": "reply contains 'was rejected'"
+    },
+    {
+      "conv": "C11",
+      "turn": "Take this banana bread recipe and remove eggs using yogurt, without dairy",
+      "ok": true,
+      "detail": "reply contains 'violates your dairy'"
+    },
+    {
+      "conv": "C12",
+      "turn": "Find pasta with at most about six or seven steps",
+      "ok": true,
+      "detail": "reply contains 'could not read it'"
+    },
+    {
+      "conv": "C12",
+      "turn": "Find pasta with at most about six or seven steps",
+      "ok": true,
+      "detail": "reply contains 'NO step limit was applied'"
+    }
+  ]
+}
