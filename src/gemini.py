@@ -4,7 +4,7 @@ import os
 import urllib.error
 import urllib.request
 
-DEFAULT_MODEL = "gemini-2.5-flash"
+DEFAULT_MODEL = "gemini-3.8-flash"
 
 
 class GeminiError(Exception):

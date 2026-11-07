@@ -5,7 +5,7 @@ saves its answers next to the ground truth computed by our system, showing where
 a plausible-sounding one-shot answer is wrong or ungrounded.
 
 Setup:  set GEMINI_API_KEY (free key from https://aistudio.google.com/apikey)
-        optionally GEMINI_MODEL (default: gemini-2.5-flash)
+        optionally GEMINI_MODEL (default: src.gemini.DEFAULT_MODEL)
 Run:    python eval/llm_baseline.py
 Output: eval/llm_baseline.md
 """
@@ -17,6 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from src import gemini
 from src import stats as S
 from src.router import Bot
 from src.search import Filters, RecipeIndex
@@ -26,7 +27,7 @@ HERE = Path(__file__).resolve().parent
 
 def ask_llm(prompt):
     key = os.environ["GEMINI_API_KEY"]
-    model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+    model = os.environ.get("GEMINI_MODEL", gemini.DEFAULT_MODEL)
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
     body = json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode()
     req = urllib.request.Request(url, data=body,
@@ -66,7 +67,7 @@ def main():
     ]
 
     out = ["# One-shot LLM baseline vs. this system", "",
-           f"Model: `{os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash')}`, one-shot, no retrieval, "
+           f"Model: `{os.environ.get('GEMINI_MODEL', gemini.DEFAULT_MODEL)}`, one-shot, no retrieval, "
            "no conversation context. Our system's answers are computed from the local dataset.", ""]
     for q, ours, note in cases:
         print("Asking LLM:", q)
