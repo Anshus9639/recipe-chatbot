@@ -5,7 +5,7 @@ import time
 import urllib.error
 import urllib.request
 
-DEFAULT_MODEL = "gemini-3.8-flash"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 
 class GeminiError(Exception):
