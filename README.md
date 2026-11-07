@@ -23,8 +23,14 @@ pip install -r requirements.txt
 #      recipes_raw_nosource_fn.json
 
 # 3. run the chatbot (first run builds the parquet cache and TF-IDF index, 1-3 min)
+streamlit run app.py            # web UI at http://localhost:8501  (recommended)
+# or the command-line interface:
 python -m src.router
 ```
+
+Both interfaces use the same `Bot` and session logic, so behavior is identical. The web UI
+([app.py](app.py)) adds clickable example prompts and a "Start over" button; the CLI is handy
+for scripted demos and the interview.
 
 Example session:
 
@@ -50,7 +56,8 @@ python eval/llm_baseline.py     # one-shot LLM comparison (set GEMINI_API_KEY fi
 ```
 
 See [eval/REPORT.md](eval/REPORT.md) for results, what failed during development and why,
-and known limitations. Full transcripts are in [eval/transcripts.md](eval/transcripts.md).
+and known limitations. Full transcripts are in [eval/transcripts.md](eval/transcripts.md),
+and a results index plus a web-UI verification transcript are in [docs/](docs/README.md).
 Each module also has a self-test: `python -m src.normalize`, `python -m src.stats`,
 `python -m src.matcher`, `python -m src.search`, `python -m src.substitution`.
 
@@ -59,7 +66,8 @@ Each module also has a self-test: `python -m src.normalize`, `python -m src.stat
 ```
 data/raw/*.json ── loader.py ──> recipes.parquet ── prepare.py ──> recipes_features.parquet
                                                                         │
-router.py (CLI + session context, rule-based intent parsing)             │
+app.py (Streamlit web UI) ─┐                                            │
+router.py (CLI + session context, rule-based intent parsing) ───────────┤
   ├── search.py        Task 1: TF-IDF ranking AFTER hard filters on the full dataset
   ├── stats.py         Task 1: pandas counts/averages/rankings over the full filtered set
   ├── matcher.py       Task 2: hard filters first, then explainable coverage scoring
@@ -121,7 +129,9 @@ all behavior is verified by the reproducible eval suite.
 ## Repository layout
 
 ```
+app.py  Streamlit web UI (wraps the same Bot as the CLI)
 src/    chatbot modules (each has a runnable self-test)
 eval/   run_eval.py, llm_baseline.py, REPORT.md, transcripts.md, results.json
+docs/   results index + web UI verification transcript + screenshots
 data/   raw JSON + processed parquet (git-ignored; see setup)
 ```
