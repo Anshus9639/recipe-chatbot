@@ -83,11 +83,10 @@ with st.sidebar:
     st.header("Session", icon=":material/tune:")
     if isinstance(st.session_state.bot, ConversationalBot):
         st.badge("Conversational mode", icon=":material/forum:", color="green")
-        k = st.session_state.bot.key or ""
-        st.caption(f"Gemini handles language; facts stay computed. Key in use: {k[:6]}...{k[-4:]}")
+        st.caption("Gemini phrases the answers; every fact is computed locally.")
     else:
         st.badge("Rule-based mode", icon=":material/rule:", color="orange")
-        st.caption("Set GEMINI_API_KEY (env or .streamlit/secrets.toml) for natural conversation.")
+        st.caption("The local engine answers directly; natural-language mode is off.")
 
     f = core_bot().f
     chips = []
@@ -116,6 +115,12 @@ with st.sidebar:
             "- Substitutions cite local recipe IDs and grade the evidence STRONG/MODERATE/WEAK.\n"
             "- The LLM only phrases answers; a guardrail rejects any rewrite that drops IDs, "
             "numbers or warnings, and the rule-based engine answers if the API fails.")
+    with st.expander("Setup & diagnostics", icon=":material/code:"):
+        st.markdown("Conversational mode: set `GEMINI_API_KEY` (environment variable or "
+                    "`.streamlit/secrets.toml`) and restart the app.")
+        if isinstance(st.session_state.bot, ConversationalBot):
+            k = st.session_state.bot.key or ""
+            st.caption(f"Key in use: {k[:6]}...{k[-4:]}")
     st.caption("[GitHub repo](https://github.com/Anshus9639/recipe-chatbot) · "
                "[Eval report](https://github.com/Anshus9639/recipe-chatbot/blob/master/eval/REPORT.md)")
 
