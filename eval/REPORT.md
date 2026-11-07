@@ -93,6 +93,21 @@ and saves its answers beside our computed answers in `eval/llm_baseline.md`:
 3. **Calories of a specific recipe** — nutrition is not in the dataset. Any specific number
    is fabricated; the correct behavior (which our system shows) is refusal.
 
-**Status:** the script is ready but must be run with a free `GEMINI_API_KEY`
-(from https://aistudio.google.com/apikey) to produce `llm_baseline.md`. It requires no extra
-dependencies (uses `urllib`). Run it before submitting and commit the generated file.
+**Status: executed** with `gemini-2.5-flash` (one-shot, no retrieval). Full output:
+[`eval/llm_baseline.md`](llm_baseline.md). Verified findings:
+
+1. **Garlic + onion count** — the LLM declined, saying it cannot compute dataset statistics.
+   Our system returns the exact computed answer (9,890 / 122,938 = 8.04%) with the denominator
+   and normalization rule stated.
+2. **Five tomato recipes with fewest steps** — the LLM **fabricated a ranked list**: we checked
+   all five titles against the dataset and **4 of 5 do not exist at all** ("Tomato Slices with
+   Salt", "Simple Roasted Tomatoes", "Bruschetta with Fresh Tomato", "Two-Ingredient Tomato
+   Soup"). The one real title ("Quick Tomato Salad", `fn:oJNprjaC7EYgQPmwnFdHcj0kcvRNiUS`) has
+   1 step, not the claimed 2, its step count is flagged unreliable (single paragraph), and it
+   does not contain the normalized ingredient `tomato`, so it is not even eligible for this
+   ranking. None of the five real answers (which our system returns with stable IDs) appear in
+   the LLM's list. This is the assignment's required case of a plausible-sounding but wrong
+   and ungrounded one-shot answer.
+3. **Calories of a specific recipe** — the LLM asserted "**360 calories**" for a recipe whose
+   record contains no nutrition data whatsoever: a pure fabrication. Our system refuses and
+   states exactly what is missing.
