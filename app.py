@@ -1,6 +1,7 @@
-"""Streamlit web UI for the recipe chatbot. Wraps the same Bot used by the CLI.
+"""Recipe Intelligence Studio — Streamlit UI over the existing deterministic Bot.
 
 Run from the repo root:  streamlit run app.py
+All facts come from Bot.reply(); the frontend only presents them.
 """
 import streamlit as st
 
@@ -8,10 +9,17 @@ from src import gemini
 from src.converse import ConversationalBot
 from src.router import Bot
 from src.search import RecipeIndex
+from ui import present, shell
 
-st.set_page_config(page_title="Recipe chatbot", page_icon=":material/restaurant:", layout="centered")
-# No native option hides the connection-state chip; the in-chat status covers progress feedback.
-st.html("<style>[data-testid='stStatusWidget'] { display: none; }</style>")
+st.set_page_config(page_title="Recipe Intelligence Studio", page_icon=":material/restaurant:",
+                   layout="centered")
+shell.inject()
+
+FOLLOWUPS = {
+    "search": ["I cannot have dairy", "at most 4 steps"],
+    "match": ["prefer fewer steps", "exclude eggs too"],
+    "adapt": ["use applesauce instead", "make it dairy-free"],
+}
 
 
 @st.cache_resource(show_spinner="Loading recipe index (first run builds the TF-IDF cache)...")
@@ -32,43 +40,19 @@ def make_bot():
     return ConversationalBot(ix, key) if key else Bot(ix)
 
 
+def core_bot():
+    b = st.session_state.bot
+    return b.core if isinstance(b, ConversationalBot) else b
+
+
 if "bot" not in st.session_state:
     st.session_state.bot = make_bot()
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "pending" not in st.session_state:
     st.session_state.pending = None
-
-EXAMPLES = [
-    "Find a penne pasta recipe",
-    "How many recipes contain both garlic and onion? What percentage of the dataset is that?",
-    "I have eggs, onions, tomatoes and rice, no peanuts, at most six steps",
-    "Take this banana bread recipe and remove eggs",
-]
-EXAMPLE_ICONS = [":material/search:", ":material/query_stats:", ":material/kitchen:", ":material/swap_horiz:"]
-
-CARDS = [
-    (":material/search:", "Search & statistics",
-     "Find recipes by dish or ingredient; counts and rankings are computed over every usable recipe, never a sample.",
-     EXAMPLES[0]),
-    (":material/kitchen:", "Pantry matching",
-     "Tell me what you have. Hard constraints are checked twice and never silently relaxed.",
-     EXAMPLES[2]),
-    (":material/swap_horiz:", "Evidence-based swaps",
-     "Replace an ingredient with graded dataset evidence, cited recipe IDs and honest confidence.",
-     EXAMPLES[3]),
-]
-
-FOLLOWUPS = {
-    "search": ["I cannot have dairy", "at most 4 steps"],
-    "match": ["prefer fewer steps", "exclude eggs too"],
-    "adapt": ["use applesauce instead", "make it dairy-free"],
-}
-
-
-def core_bot():
-    b = st.session_state.bot
-    return b.core if isinstance(b, ConversationalBot) else b
+if "archive" not in st.session_state:
+    st.session_state.archive = []
 
 
 def send(text):
@@ -76,76 +60,37 @@ def send(text):
 
 
 def reset():
+    msgs = st.session_state.messages
+    if msgs:
+        title = next((m["content"] for m in msgs if m["role"] == "user"), "Conversation")
+        st.session_state.archive = ([{"title": title[:48], "messages": msgs}]
+                                    + st.session_state.archive)[:5]
     st.session_state.bot = make_bot()
     st.session_state.messages = []
     st.session_state.pending = None
 
 
-with st.sidebar:
-    st.header("Session", icon=":material/tune:")
-    if isinstance(st.session_state.bot, ConversationalBot):
-        st.badge("Conversational mode", icon=":material/forum:", color="green")
-        st.caption("Gemini phrases the answers; every fact is computed locally.")
-    else:
-        st.badge("Rule-based mode", icon=":material/rule:", color="orange")
-        st.caption("The local engine answers directly; natural-language mode is off.")
+core = core_bot()
+bot = st.session_state.bot
+shell.sidebar(core, send, reset, st.session_state.archive,
+              conversational=isinstance(bot, ConversationalBot),
+              api_key=getattr(bot, "key", "") or "")
 
-    f = core_bot().f
-    chips = []
-    if f.query:
-        chips.append(f":blue-badge[search: {f.query}]")
-    chips += [f":green-badge[has {k}]" for k in f.include]
-    chips += [f":red-badge[no {x}]" for x in f.exclude]
-    chips += [f":orange-badge[{r}-free]" for r in f.restrictions]
-    if f.max_steps is not None:
-        chips.append(f":violet-badge[at most {f.max_steps} steps]")
-    st.markdown("**Active filters**")
-    st.markdown(" ".join(chips) if chips else ":gray-badge[none - all usable recipes]")
-    if f.restrictions or f.exclude:
-        st.button("Clear restrictions", icon=":material/filter_alt_off:", key="clear_restrictions",
-                  on_click=send, args=("clear restrictions",), width="stretch")
-    st.button("Start over", icon=":material/restart_alt:", key="restart", on_click=reset, width="stretch")
-
-    st.markdown("**Try an example**")
-    for i, ex in enumerate(EXAMPLES):
-        st.button(f"{EXAMPLE_ICONS[i]} {ex}", key=f"ex_{i}", on_click=send, args=(ex,), width="stretch")
-
-    with st.expander("How answers stay grounded", icon=":material/verified:"):
-        st.markdown(
-            "- Hard filters run before ranking, over all usable recipes.\n"
-            "- Statistics are exact computations, not estimates.\n"
-            "- Substitutions cite local recipe IDs and grade the evidence STRONG/MODERATE/WEAK.\n"
-            "- The LLM only phrases answers; a guardrail rejects any rewrite that drops IDs, "
-            "numbers or warnings, and the rule-based engine answers if the API fails.")
-    with st.expander("Setup & diagnostics", icon=":material/code:"):
-        st.markdown("Conversational mode: set `GEMINI_API_KEY` (environment variable or "
-                    "`.streamlit/secrets.toml`) and restart the app.")
-        if isinstance(st.session_state.bot, ConversationalBot):
-            k = st.session_state.bot.key or ""
-            st.caption(f"Key in use: {k[:6]}...{k[-4:]}")
-    st.caption("[GitHub repo](https://github.com/Anshus9639/recipe-chatbot) · "
-               "[Eval report](https://github.com/Anshus9639/recipe-chatbot/blob/master/eval/REPORT.md)")
-
-st.title("Recipe chatbot", icon=":material/restaurant:")
-st.caption("Grounded search, statistics, ingredient matching and evidence-based substitution "
-           "over the Recipe Box dataset.")
-with st.container(horizontal=True):
-    st.badge(f"{len(ix.df):,} usable recipes", icon=":material/database:", color="blue")
-    st.badge(f"{ix.df['source'].nunique()} sources", icon=":material/library_books:", color="violet")
-    st.badge("Every fact computed locally", icon=":material/verified:", color="green")
+if not st.session_state.messages and not st.session_state.pending:
+    shell.hero(len(ix.df), ix.df["source"].nunique(), send)
 
 for i, msg in enumerate(st.session_state.messages):
+    latest = i == len(st.session_state.messages) - 1 and msg["role"] == "assistant"
     with st.chat_message(msg["role"], avatar=":material/restaurant:" if msg["role"] == "assistant"
                          else ":material/person:"):
-        st.markdown(msg["content"])
-        if i == len(st.session_state.messages) - 1 and msg["role"] == "assistant":
-            c = core_bot()
-            if c.last:
+        present.render_assistant(msg["content"], core, ix, latest=latest)
+        if latest:
+            if core.last:
                 with st.container(horizontal=True):
-                    for n in range(1, min(5, len(c.last)) + 1):
+                    for n in range(1, min(5, len(core.last)) + 1):
                         st.button(f"Show {n}", key=f"qa_show_{n}", icon=":material/visibility:",
                                   on_click=send, args=(f"show {n}",))
-            follow = FOLLOWUPS.get(c.last_kind, [])
+            follow = FOLLOWUPS.get(core.last_kind, [])
             if follow:
                 with st.container(horizontal=True):
                     for j, chip in enumerate(follow):
@@ -158,21 +103,14 @@ if st.session_state.pending:
     with st.chat_message("user", avatar=":material/person:"):
         st.markdown(text)
     with st.chat_message("assistant", avatar=":material/restaurant:"):
-        with st.status(":shimmer[Cooking up a grounded answer...]", type="compact") as status:
-            reply = st.session_state.bot.reply(text)
-            status.update(label="Answer computed from the dataset", state="complete")
-        st.markdown(reply)
+        with st.container(key="msg_new"):
+            with st.container(key="cooking"):
+                with st.status(":shimmer[Cooking up a grounded answer...]", type="compact") as status:
+                    reply = st.session_state.bot.reply(text)
+                    status.update(label="Answer computed from the dataset", state="complete")
+            present.render_assistant(reply, core, ix, latest=True)
     st.session_state.messages.append({"role": "assistant", "content": reply})
     st.rerun()
-
-if not st.session_state.messages:
-    for j, (col, (icon, name, desc, ex)) in enumerate(zip(st.columns(3), CARDS)):
-        with col:
-            with st.container(border=True, height="stretch"):
-                st.markdown(f"{icon} **{name}**")
-                st.caption(desc)
-                st.button("Try it", key=f"card_{j}", on_click=send, args=(ex,), width="stretch")
-    st.caption("...or type anything below: searches, statistics, pantry matches, substitutions.")
 
 if prompt := st.chat_input("Ask about recipes, ingredients, statistics or substitutions",
                            key="chat", submit_mode="disable"):

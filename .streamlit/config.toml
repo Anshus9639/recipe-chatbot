@@ -1,46 +1,29 @@
 [theme]
-baseRadius = "10px"
+base = "dark"
+primaryColor = "#B5D99A"
+backgroundColor = "#101712"
+secondaryBackgroundColor = "#17231B"
+textColor = "#F5F1E8"
+borderColor = "#2A3A2E"
+linkColor = "#B5D99A"
+font = "sans-serif"
+headingFont = "Georgia, 'Iowan Old Style', 'Palatino Linotype', serif"
+codeFont = "monospace"
+baseRadius = "14px"
 buttonRadius = "full"
-font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-headingFont = "Fraunces:https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&display=swap"
-codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
-primaryColor = "#C2410C"
-paddingTop = "1.5rem"
-
-[theme.light]
-backgroundColor = "#FFFBF7"
-secondaryBackgroundColor = "#F6EDE3"
-textColor = "#2B2118"
-borderColor = "#E7DACA"
-linkColor = "#C2410C"
-
-[theme.dark]
-backgroundColor = "#1A1512"
-secondaryBackgroundColor = "#251E19"
-textColor = "#EFE6DC"
-borderColor = "#3B3128"
-primaryColor = "#C2410C"
-linkColor = "#FB923C"
-
-[theme.sidebar]
+showSidebarBorder = false
 paddingTop = "1rem"
 
-[theme.light.sidebar]
-backgroundColor = "#2B2118"
-secondaryBackgroundColor = "#3A2D22"
-textColor = "#F6EDE3"
-borderColor = "#4A3B2D"
-primaryColor = "#C2410C"
-linkColor = "#FDBA74"
-codeBackgroundColor = "#3A2D22"
-codeTextColor = "#F6EDE3"
+[theme.sidebar]
+backgroundColor = "#141C16"
+secondaryBackgroundColor = "#1D2820"
+textColor = "#F5F1E8"
+borderColor = "#2A3A2E"
+primaryColor = "#B5D99A"
+linkColor = "#B5D99A"
+codeBackgroundColor = "#1D2820"
+codeTextColor = "#F5F1E8"
+paddingTop = "0.75rem"
 
-[theme.dark.sidebar]
-backgroundColor = "#251E19"
-secondaryBackgroundColor = "#2E2620"
-textColor = "#EFE6DC"
-borderColor = "#3B3128"
-primaryColor = "#C2410C"
-linkColor = "#FB923C"
-codeBackgroundColor = "#2E2620"
-codeTextColor = "#EFE6DC"
+[server]
+enableStaticServing = true

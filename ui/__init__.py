@@ -1,0 +1,1 @@
+"""Frontend package for the Recipe Intelligence Studio UI (presentation only)."""
