@@ -13,6 +13,8 @@ The reproducible evaluation lives in [`eval/`](../eval):
   statistic, no-match cases, and a substitution with weak/conflicting evidence.
 - [`eval/results.json`](../eval/results.json) — machine-readable pass/fail for all 57 checks.
 - [`eval/run_eval.py`](../eval/run_eval.py) — re-run everything with `python eval/run_eval.py`.
+- [`eval/test_converse.py`](../eval/test_converse.py) — conversational-layer guardrail and
+  fallback tests (no API key needed).
 - [`eval/llm_baseline.py`](../eval/llm_baseline.py) — one-shot LLM comparison (run with a
   `GEMINI_API_KEY`; produces `eval/llm_baseline.md`).
 

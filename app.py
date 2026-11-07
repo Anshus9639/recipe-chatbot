@@ -4,6 +4,8 @@ Run from the repo root:  streamlit run app.py
 """
 import streamlit as st
 
+from src import gemini
+from src.converse import ConversationalBot
 from src.router import Bot
 from src.search import RecipeIndex
 
@@ -17,8 +19,19 @@ def load_index():
 
 ix = load_index()
 
+
+def make_bot():
+    key = gemini.get_api_key()
+    if not key:
+        try:
+            key = st.secrets.get("GEMINI_API_KEY")
+        except Exception:
+            key = None
+    return ConversationalBot(ix, key) if key else Bot(ix)
+
+
 if "bot" not in st.session_state:
-    st.session_state.bot = Bot(ix)
+    st.session_state.bot = make_bot()
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -38,9 +51,15 @@ def send(text):
 with st.sidebar:
     st.header("Recipe chatbot")
     st.caption(f"{len(ix.df):,} usable recipes from the Recipe Box dataset. "
-               "Every answer is retrieved or computed locally — no runtime LLM.")
+               "Every fact is retrieved or computed locally.")
+    if isinstance(st.session_state.bot, ConversationalBot):
+        st.success("Conversational mode: Gemini handles language; facts stay computed.",
+                   icon=":material/forum:")
+    else:
+        st.info("Rule-based mode. Set GEMINI_API_KEY (env or .streamlit/secrets.toml) "
+                "for natural conversation.", icon=":material/rule:")
     if st.button("Start over", icon=":material/restart_alt:", width="stretch"):
-        st.session_state.bot = Bot(ix)
+        st.session_state.bot = make_bot()
         st.session_state.messages = []
         st.rerun()
     st.divider()

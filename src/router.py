@@ -515,7 +515,14 @@ DEMO_SUB = [
 ]
 
 if __name__ == "__main__":
-    bot = Bot(RecipeIndex())
+    ix = RecipeIndex()
+    if "--chat" in sys.argv:
+        from src.converse import ConversationalBot
+        bot = ConversationalBot(ix)
+        if not bot.key:
+            print("GEMINI_API_KEY not set - running in rule-based mode.")
+    else:
+        bot = Bot(ix)
     flags = {"--demo": DEMO, "--demo-match": DEMO_MATCH, "--demo-sub": DEMO_SUB}
     chosen = next((v for k, v in flags.items() if k in sys.argv), None)
     if chosen:
