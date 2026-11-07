@@ -1,6 +1,7 @@
 """Minimal Gemini REST client (stdlib only). Key from GEMINI_API_KEY; model from GEMINI_MODEL."""
 import json
 import os
+import urllib.error
 import urllib.request
 
 DEFAULT_MODEL = "gemini-2.5-flash"
@@ -31,6 +32,9 @@ def call(prompt, system=None, json_mode=False, key=None, timeout=60):
         with urllib.request.urlopen(req, timeout=timeout) as r:
             data = json.load(r)
         text = "".join(p.get("text", "") for p in data["candidates"][0]["content"]["parts"])
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", "replace")[:300]
+        raise GeminiError(f"HTTP {e.code}: {body}") from e
     except Exception as e:
         raise GeminiError(str(e)) from e
     if not text.strip():

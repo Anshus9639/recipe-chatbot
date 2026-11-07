@@ -55,6 +55,8 @@ with st.sidebar:
     if isinstance(st.session_state.bot, ConversationalBot):
         st.success("Conversational mode: Gemini handles language; facts stay computed.",
                    icon=":material/forum:")
+        k = st.session_state.bot.key or ""
+        st.caption(f"API key in use: {k[:6]}...{k[-4:]}")
     else:
         st.info("Rule-based mode. Set GEMINI_API_KEY (env or .streamlit/secrets.toml) "
                 "for natural conversation.", icon=":material/rule:")
