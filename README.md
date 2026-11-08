@@ -41,6 +41,13 @@ https://aistudio.google.com/apikey) in your environment or in `.streamlit/secret
 free-form messages and rephrases answers naturally; all facts still come from the engine.
 Without a key everything works in rule-based mode.
 
+The Gemini layer never supplies facts: it only translates the user message into an engine command
+and rephrases the engine output. The rewrite guard checks IDs, numbers and safety markers, but it
+does not judge prose accuracy, and the intent-translation step has no equivalent guard, so the
+engine always prints the filters it actually applied. The default model is set in `src/gemini.py`
+(override with `GEMINI_MODEL`); the one-shot baseline in `eval/llm_baseline.md` was run on
+`gemini-2.5-flash`.
+
 Example session:
 
 ```
@@ -148,6 +155,6 @@ all behavior is verified by the reproducible eval suite.
 app.py  Streamlit web UI (wraps the same Bot as the CLI)
 src/    chatbot modules (each has a runnable self-test)
 eval/   run_eval.py, llm_baseline.py, REPORT.md, transcripts.md, results.json
-docs/   results index + web UI verification transcript + screenshots
+docs/   results index + web UI verification transcript
 data/   raw JSON + processed parquet (git-ignored; see setup)
 ```

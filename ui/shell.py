@@ -136,9 +136,8 @@ def sidebar(core, send, reset, archive, conversational=False, api_key=""):
         with st.expander("Setup & diagnostics", icon=":material/code:"):
             st.markdown("Conversational mode: set `GEMINI_API_KEY` (environment variable or "
                         "`.streamlit/secrets.toml`) and restart the app.")
-            k = api_key
-            if k:
-                st.caption(f"Key in use: {k[:6]}...{k[-4:]}")
+            if api_key:
+                st.caption("Gemini key detected: conversational mode is on.")
         st.caption("[GitHub repo](https://github.com/Anshus9639/recipe-chatbot) · "
                    "[Eval report](https://github.com/Anshus9639/recipe-chatbot/blob/master/eval/REPORT.md)")
 
@@ -149,7 +148,7 @@ def hero(n_recipes, n_sources, send):
     st.caption(f"Explore {n_recipes:,} recipes using grounded retrieval, intelligent ingredient "
                "matching and evidence-based substitutions.")
     metrics = [(n_recipes, "usable recipes", ""), (n_sources, "recipe sources", ""),
-               (100, "local computation for dataset facts", "%")]
+               (100, "of dataset facts computed locally", "%")]
     for col, (i, (value, label, suffix)) in zip(st.columns(3), enumerate(metrics)):
         with col:
             with st.container(key=f"metric_{i}"):
