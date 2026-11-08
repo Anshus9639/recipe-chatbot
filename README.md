@@ -64,6 +64,16 @@ you> start over
 Scripted demos: `python -m src.router --demo` (search/stats), `--demo-match` (matching),
 `--demo-sub` (substitution).
 
+## Screenshots
+
+Captured from the running Streamlit app (Gemini conversational mode on; facts are still computed locally).
+
+![Home](docs/01-home.png)
+![Statistics: garlic AND onion = 9,890 (8.04%)](docs/03-stats.png)
+![No-match case with constraint-violating alternatives clearly labelled](docs/05-no-match.png)
+![Substitution: evidence grades and conflict flag](docs/06a-substitution.png)
+![Substitution: updated ingredients, revised instructions and prediction label](docs/06b-substitution.png)
+
 ## Evaluation
 
 ```bash
